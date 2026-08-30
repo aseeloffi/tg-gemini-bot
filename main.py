@@ -5,10 +5,11 @@ from google import genai
 from google.genai import types
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-TOKEN      = os.getenv("TELEGRAM_TOKEN", "")
-GEMINI_KEY = os.getenv("GEMINI_API_KEY", "")
-PASSWORD   = os.getenv("BOT_PASSWORD", "")
-ADMIN_ID   = int(os.getenv("ADMIN_ID", "0"))
+TOKEN        = os.getenv("TELEGRAM_TOKEN", "")
+GEMINI_KEY   = os.getenv("GEMINI_API_KEY", "")
+PASSWORD     = os.getenv("BOT_PASSWORD", "")
+ADMIN_ID     = int(os.getenv("ADMIN_ID", "0"))
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 
 client_ai = genai.Client(api_key=GEMINI_KEY)
 bot = telebot.TeleBot(TOKEN)
@@ -101,7 +102,7 @@ def ask_gemini(user_id: int):
         if c.parts and c.parts[0].text and c.parts[0].text.strip()
     ]
     return client_ai.models.generate_content(
-        model="gemini-2.5-flash",
+        model=GEMINI_MODEL,
         contents=clean_history,
         config=types.GenerateContentConfig(
             system_instruction=PERSONALITY + "\n\n" + get_memory_text(user_id),
