@@ -1,6 +1,12 @@
 services:
   tg-ai-bot:
     build: .
+    container_name: tg-ai-bot
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
     env_file:
       - .env
